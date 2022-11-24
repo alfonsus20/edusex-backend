@@ -3,14 +3,15 @@ import {
   Injectable,
   HttpStatus,
   BadRequestException,
+  HttpCode,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../models/user.model';
 import { LoginDto, RegisterDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
-import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,10 @@ export class AuthService {
         throw new ForbiddenException('Email tidak ditemukan');
       }
 
-      const isPasswordCorrect = await argon.verify(user.password, dto.password);
+      const isPasswordCorrect = await bcrypt.compare(
+        dto.password,
+        user.password,
+      );
 
       if (!isPasswordCorrect) {
         throw new ForbiddenException('Password salah');
@@ -51,8 +55,6 @@ export class AuthService {
 
   async register(dto: RegisterDto) {
     try {
-      const hashedPassword = await argon.hash(dto.password);
-
       const existingUser = await this.usersRepository.findOneBy({
         email: dto.email,
       });
@@ -60,6 +62,8 @@ export class AuthService {
       if (existingUser) {
         throw new BadRequestException('Email sudah digunakan');
       }
+
+      const hashedPassword = await bcrypt.hash(dto.password, 10);
 
       const user = await this.usersRepository.save({
         email: dto.email,
