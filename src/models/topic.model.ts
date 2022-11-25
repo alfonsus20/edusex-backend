@@ -2,14 +2,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  Index,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserRole } from '../enum';
+import { Material } from './material.model';
 
 @Entity()
-export class User {
+export class Topic {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,21 +17,20 @@ export class User {
   name: string;
 
   @Column('text')
-  password: string;
+  icon_url: string;
 
-  @Index({ unique: true })
   @Column('text')
-  email: string;
+  illustration_url: string;
 
-  @Column('text', { nullable: true })
-  avatar_url: string;
-
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
-  role: UserRole;
+  @Column('text')
+  description: string;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => Material, (material) => material.topic)
+  materials: Material[];
 }
