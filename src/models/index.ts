@@ -4,3 +4,6 @@ export * from './material.model';
 export * from './quiz.model';
 export * from './quiz-question.model';
 export * from './quiz-question-option.model';
+export * from './quiz-attempt.model';
+export * from './discussion-question.model';
+export * from './discussion-question-reply.model';

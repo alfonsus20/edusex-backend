@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { TopicModule } from './topic/topic.module';
 import { MaterialModule } from './material/material.module';
 import { QuizModule } from './quiz/quiz.module';
+import { ChatModule } from './chat/chat.module';
+import { DiscussionModule } from './discussion/discussion.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { QuizModule } from './quiz/quiz.module';
     TopicModule,
     MaterialModule,
     QuizModule,
+    ChatModule,
+    DiscussionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

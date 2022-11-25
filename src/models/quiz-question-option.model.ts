@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -24,6 +25,9 @@ export class QuizQuestionOption {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @ManyToOne(() => QuizQuestion, (question) => question.options)
   question: QuizQuestion;

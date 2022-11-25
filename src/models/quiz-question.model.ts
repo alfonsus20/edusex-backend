@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -27,9 +28,14 @@ export class QuizQuestion {
   @UpdateDateColumn()
   updated_at: Date;
 
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)
   quiz: Quiz;
 
-  @OneToMany(() => QuizQuestionOption, (option) => option.question)
+  @OneToMany(() => QuizQuestionOption, (option) => option.question, {
+    cascade: true,
+  })
   options: QuizQuestionOption[];
 }
