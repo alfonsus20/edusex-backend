@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   OneToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Material } from './material.model';
 import { QuizAttempt } from './quiz-attempt.model';
@@ -26,9 +27,10 @@ export class Quiz {
   updated_at: Date;
 
   @OneToOne(() => Material, (material) => material.quiz)
+  @JoinColumn()
   material: Material;
 
-  @OneToMany(() => QuizQuestion, (question) => question.quiz)
+  @OneToMany(() => QuizQuestion, (question) => question.quiz, { cascade: true })
   questions: QuizQuestion[];
 
   @OneToMany(() => QuizAttempt, (attempt) => attempt.quiz)

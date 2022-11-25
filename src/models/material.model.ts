@@ -31,8 +31,7 @@ export class Material {
   @ManyToOne(() => Topic, (topic) => topic.materials)
   topic: Topic;
 
-  @OneToOne(() => Quiz, (quiz) => quiz.material)
-  @JoinColumn()
+  @OneToOne(() => Quiz, (quiz) => quiz.material, { cascade: true })
   quiz: Quiz;
 
   @CreateDateColumn()

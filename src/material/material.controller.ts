@@ -1,5 +1,7 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { JwtGuard } from '../auth/guard';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { JwtGuard, RolesGuard } from '../auth/guard';
+import { UserRole } from '../enum';
+import { CreateMaterialDto } from './dto';
 import { MaterialService } from './material.service';
 
 @UseGuards(JwtGuard)
@@ -10,5 +12,11 @@ export class MaterialController {
   @Get(':id')
   getMaterialById(@Param('id') materialId: string) {
     return this.materialService.getMaterialById(materialId);
+  }
+
+  @UseGuards(new RolesGuard(UserRole.ADMIN))
+  @Post('create')
+  createMaterial(@Body() dto: CreateMaterialDto) {
+    return this.materialService.createMaterial(dto);
   }
 }
