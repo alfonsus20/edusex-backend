@@ -9,6 +9,7 @@ import { MaterialModule } from './material/material.module';
 import { QuizModule } from './quiz/quiz.module';
 import { ChatModule } from './chat/chat.module';
 import { DiscussionModule } from './discussion/discussion.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { DiscussionModule } from './discussion/discussion.module';
     QuizModule,
     ChatModule,
     DiscussionModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

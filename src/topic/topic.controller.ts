@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/guard';
 import { TopicService } from './topic.service';
 
@@ -9,6 +9,11 @@ export class TopicController {
   @Get()
   async getTopics() {
     return this.topicService.getTopics();
+  }
+
+  @Get(':id')
+  async getTopicById(@Param('id') id: string) {
+    return this.topicService.getTopicById(id);
   }
 
   @UseGuards(JwtGuard)

@@ -19,6 +19,23 @@ export class TopicService {
     }
   }
 
+  async getTopicById(topicId: string) {
+    try {
+      const topic = await this.topicsRepository.findOne({
+        where: { id: +topicId },
+        relations: { materials: true },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success',
+        data: topic,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getTopicsWithProgress() {
     try {
       const topics = await this.topicsRepository.find();

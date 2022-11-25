@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Material } from './material.model';
+import { QuizAttempt } from './quiz-attempt.model';
 import { QuizQuestion } from './quiz-question.model';
 
 @Entity()
@@ -29,4 +30,7 @@ export class Quiz {
 
   @OneToMany(() => QuizQuestion, (question) => question.quiz)
   questions: QuizQuestion[];
+
+  @OneToMany(() => QuizAttempt, (attempt) => attempt.quiz)
+  attempts: QuizAttempt[];
 }
