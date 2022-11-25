@@ -24,7 +24,7 @@ export class QuizService {
 
   async getQuizQuestions(quizId: string) {
     try {
-      const quiz = this.quizRepository.find({
+      const quiz = await this.quizRepository.find({
         where: { id: +quizId },
         relations: { questions: { options: true } },
       });
