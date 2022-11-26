@@ -11,6 +11,7 @@ import { ChatModule } from './chat/chat.module';
 import { DiscussionModule } from './discussion/discussion.module';
 import { ProfileModule } from './profile/profile.module';
 import { QuizAttemptModule } from './quiz-attempt/quiz-attempt.module';
+import { PsikologModule } from './psikolog/psikolog.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { QuizAttemptModule } from './quiz-attempt/quiz-attempt.module';
     DiscussionModule,
     ProfileModule,
     QuizAttemptModule,
+    PsikologModule,
   ],
   controllers: [AppController],
   providers: [AppService],

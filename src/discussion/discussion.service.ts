@@ -50,7 +50,10 @@ export class DiscussionService {
       const questions = await this.discussionQuestionRepository.find({
         relations: { replies: { user: true } },
         select: {
-          replies: { reply: true, user: { id: true, name: true, role: true } },
+          replies: {
+            reply: true,
+            user: { id: true, name: true, role: true, avatar_url: true },
+          },
         },
       });
 
@@ -66,7 +69,10 @@ export class DiscussionService {
         relations: { replies: { user: true } },
         where: { id: +questionId },
         select: {
-          replies: { reply: true, user: { id: true, name: true, role: true } },
+          replies: {
+            reply: true,
+            user: { id: true, name: true, role: true, avatar_url: true },
+          },
         },
       });
 
@@ -82,7 +88,10 @@ export class DiscussionService {
         where: { user: { id: userId } },
         relations: { replies: { user: true } },
         select: {
-          replies: { reply: true, user: { id: true, name: true, role: true } },
+          replies: {
+            reply: true,
+            user: { id: true, name: true, role: true, avatar_url: true },
+          },
         },
       });
 
