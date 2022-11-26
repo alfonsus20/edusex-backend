@@ -15,7 +15,7 @@ export class MaterialService {
 
   async getMaterialById(materialId: string) {
     try {
-      const material = await this.materialsRepository.find({
+      const material = await this.materialsRepository.findOne({
         where: { id: +materialId },
         relations: {
           quiz: true,
