@@ -19,7 +19,7 @@ export class DiscussionQuestionReply {
   @ManyToOne(() => User)
   user: User;
 
-  @ManyToOne(() => DiscussionQuestion)
+  @ManyToOne(() => DiscussionQuestion, (question) => question.replies)
   question: DiscussionQuestion;
 
   @CreateDateColumn()

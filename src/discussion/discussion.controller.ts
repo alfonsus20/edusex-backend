@@ -25,4 +25,19 @@ export class DiscussionController {
   ) {
     return this.discussionService.createQuestion(userId, dto);
   }
+
+  @Get()
+  getAllQuestions() {
+    return this.discussionService.getAllQuestions();
+  }
+
+  @Get('my-questions')
+  getUserQuestions(userId: number) {
+    return this.discussionService.getUserQuestions(userId);
+  }
+
+  @Get(':id')
+  getQuestionById(@Param('id') questionId: string) {
+    return this.discussionService.getQuestionById(questionId);
+  }
 }

@@ -44,4 +44,51 @@ export class DiscussionService {
       throw error;
     }
   }
+
+  async getAllQuestions() {
+    try {
+      const questions = await this.discussionQuestionRepository.find({
+        relations: { replies: { user: true } },
+        select: {
+          replies: { reply: true, user: { id: true, name: true, role: true } },
+        },
+      });
+
+      return { statusCode: HttpStatus.OK, message: 'success', data: questions };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getQuestionById(questionId: string) {
+    try {
+      const question = await this.discussionQuestionRepository.findOne({
+        relations: { replies: { user: true } },
+        where: { id: +questionId },
+        select: {
+          replies: { reply: true, user: { id: true, name: true, role: true } },
+        },
+      });
+
+      return { statusCode: HttpStatus.OK, message: 'success', data: question };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserQuestions(userId: number) {
+    try {
+      const question = await this.discussionQuestionRepository.find({
+        where: { user: { id: userId } },
+        relations: { replies: { user: true } },
+        select: {
+          replies: { reply: true, user: { id: true, name: true, role: true } },
+        },
+      });
+
+      return { statusCode: HttpStatus.OK, message: 'success', data: question };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

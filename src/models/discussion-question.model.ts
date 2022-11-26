@@ -3,8 +3,10 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DiscussionQuestionReply } from './discussion-question-reply.model';
 import { Topic } from './topic.model';
 import { User } from './user.model';
 
@@ -21,6 +23,9 @@ export class DiscussionQuestion {
 
   @ManyToOne(() => User)
   user: User;
+
+  @OneToMany(() => DiscussionQuestionReply, (reply) => reply.question)
+  replies: DiscussionQuestionReply[];
 
   @CreateDateColumn()
   created_at: Date;
