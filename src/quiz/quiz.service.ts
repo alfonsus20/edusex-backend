@@ -87,7 +87,7 @@ export class QuizService {
           : QuizAttemptStatus.FAILED;
 
       const quizAttempt = await this.quizAttemptRepository.save({
-        score: totalScore,
+        score: Math.round(totalScore),
         user: { id: userId },
         quiz: { id: +quizId },
         status,

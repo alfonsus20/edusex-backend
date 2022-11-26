@@ -5,15 +5,11 @@ import { UserRole } from '../enum';
 import { User } from '../models';
 import { CreatePsikologDto } from './dto';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PsikologService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    private jwt: JwtService,
-    private config: ConfigService,
   ) {}
 
   async getAllPsikolog() {
