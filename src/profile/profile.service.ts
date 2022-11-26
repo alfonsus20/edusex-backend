@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuizAttemptStatus, UserRole } from '../enum';
 import { Quiz, QuizAttempt, User } from '../models';
+import { EditProfileDto } from './dto';
 
 @Injectable()
 export class ProfileService {
@@ -48,6 +49,20 @@ export class ProfileService {
         statusCode: HttpStatus.OK,
         message: 'success',
         data: returnedData,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async editProfile(userId: number, dto: EditProfileDto) {
+    try {
+      const updateInfo = await this.userRepository.update({ id: userId }, dto);
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success',
+        data: updateInfo,
       };
     } catch (error) {
       throw error;
