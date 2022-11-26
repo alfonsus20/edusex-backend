@@ -4,9 +4,11 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { QuizAttemptAnswer } from './quiz-attempt-answer.model';
 import { QuizQuestion } from './quiz-question.model';
 
 @Entity()
@@ -31,4 +33,7 @@ export class QuizQuestionOption {
 
   @ManyToOne(() => QuizQuestion, (question) => question.options)
   question: QuizQuestion;
+
+  // @OneToMany(() => QuizAttemptAnswer, (answer) => answer.attempt)
+  // attempt: QuizAttemptAnswer[];
 }

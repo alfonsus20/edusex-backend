@@ -3,7 +3,7 @@ import { QuizService } from './quiz.service';
 import { QuizController } from './quiz.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Quiz } from '../models/quiz.model';
-import { QuizQuestion } from '../models';
+import { QuizAttemptAnswer, QuizQuestion } from '../models';
 import { QuizQuestionOption } from '../models/quiz-question-option.model';
 import { QuizAttempt } from '../models/quiz-attempt.model';
 
@@ -14,6 +14,7 @@ import { QuizAttempt } from '../models/quiz-attempt.model';
       QuizQuestion,
       QuizQuestionOption,
       QuizAttempt,
+      QuizAttemptAnswer,
     ]),
   ],
   controllers: [QuizController],

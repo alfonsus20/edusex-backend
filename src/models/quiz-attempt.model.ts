@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { QuizAttemptStatus } from '../enum';
+import { QuizAttemptAnswer } from './quiz-attempt-answer.model';
 import { Quiz } from './quiz.model';
 import { User } from './user.model';
 
@@ -25,6 +27,11 @@ export class QuizAttempt {
 
   @ManyToOne(() => Quiz)
   quiz: Quiz;
+
+  @OneToMany(() => QuizAttemptAnswer, (answer) => answer.attempt, {
+    cascade: true,
+  })
+  answers: QuizAttemptAnswer[];
 
   @CreateDateColumn()
   created_at: Date;

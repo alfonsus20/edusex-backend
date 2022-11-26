@@ -2,17 +2,17 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuizAttemptStatus } from '../enum';
-import { Quiz, QuizAttempt, QuizQuestion } from '../models';
+import { Quiz, QuizAttempt, QuizAttemptAnswer } from '../models';
 import { SubmitQuizDto } from './dto';
 
 @Injectable()
 export class QuizService {
   constructor(
     @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
-    @InjectRepository(QuizQuestion)
-    private quizQuestionRepository: Repository<QuizQuestion>,
     @InjectRepository(QuizAttempt)
     private quizAttemptRepository: Repository<QuizAttempt>,
+    @InjectRepository(QuizAttemptAnswer)
+    private quizAttemptAnswerRepository: Repository<QuizAttemptAnswer>,
   ) {}
 
   async getQuizById(userId: number, quizId: string) {
@@ -91,6 +91,10 @@ export class QuizService {
         user: { id: userId },
         quiz: { id: +quizId },
         status,
+        answers: answers.answers.map((answer) => ({
+          question: { id: answer.question_id },
+          option: { id: answer.option_id },
+        })),
       });
 
       return {

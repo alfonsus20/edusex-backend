@@ -6,7 +6,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
-  JoinColumn,
 } from 'typeorm';
 import { Quiz } from './quiz.model';
 import { Topic } from './topic.model';
