@@ -18,7 +18,7 @@ export class Quiz {
   id: number;
 
   @Column('int', { default: 80 })
-  min_score: string;
+  min_score: number;
 
   @CreateDateColumn()
   created_at: Date;

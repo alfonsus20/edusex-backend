@@ -1,22 +1,35 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Quiz } from '../models';
+import { QuizAttemptStatus } from '../enum';
+import { Quiz, QuizAttempt, QuizQuestion } from '../models';
+import { SubmitQuizDto } from './dto';
 
 @Injectable()
 export class QuizService {
   constructor(
     @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
+    @InjectRepository(QuizQuestion)
+    private quizQuestionRepository: Repository<QuizQuestion>,
+    @InjectRepository(QuizAttempt)
+    private quizAttemptRepository: Repository<QuizAttempt>,
   ) {}
 
   async getQuizById(userId: number, quizId: string) {
     try {
-      const quiz = this.quizRepository.find({
-        where: { id: +quizId, attempts: { user: { id: userId } } },
-        relations: { attempts: true },
+      const quiz = await this.quizRepository.findOne({
+        where: { id: +quizId },
       });
 
-      return { statusCode: HttpStatus.OK, message: 'success', data: quiz };
+      const quizAttempts = await this.quizAttemptRepository.find({
+        where: { user: { id: userId } },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success',
+        data: { ...quiz, attempts: quizAttempts },
+      };
     } catch (error) {
       throw error;
     }
@@ -30,6 +43,61 @@ export class QuizService {
       });
 
       return { statusCode: HttpStatus.OK, message: 'success', data: quiz };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async submitQuizQuestions(
+    userId: number,
+    quizId: string,
+    answers: SubmitQuizDto,
+  ) {
+    try {
+      const quiz = await this.quizRepository.findOne({
+        where: { id: +quizId },
+        relations: { questions: { options: true } },
+      });
+
+      const answerKey = quiz.questions.reduce(
+        (prev, question) => ({
+          ...prev,
+          [question.id]: question.options.find((option) => option.is_true).id,
+        }),
+        {},
+      );
+
+      const userAnswer = answers.answers.reduce(
+        (prev, answer) => ({ ...prev, [answer.question_id]: answer.option_id }),
+        {},
+      );
+
+      const totalScore =
+        (Object.keys(answerKey).reduce(
+          (prev, questionId) =>
+            prev + (answerKey[questionId] === userAnswer[questionId] ? 1 : 0),
+          0,
+        ) *
+          100) /
+        quiz.questions.length;
+
+      const status =
+        totalScore > quiz.min_score
+          ? QuizAttemptStatus.SUCCESS
+          : QuizAttemptStatus.FAILED;
+
+      const quizAttempt = await this.quizAttemptRepository.save({
+        score: totalScore,
+        user: { id: userId },
+        quiz: { id: +quizId },
+        status,
+      });
+
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'success',
+        data: quizAttempt,
+      };
     } catch (error) {
       throw error;
     }
