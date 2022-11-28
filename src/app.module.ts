@@ -12,6 +12,7 @@ import { DiscussionModule } from './discussion/discussion.module';
 import { ProfileModule } from './profile/profile.module';
 import { QuizAttemptModule } from './quiz-attempt/quiz-attempt.module';
 import { PsikologModule } from './psikolog/psikolog.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PsikologModule } from './psikolog/psikolog.module';
     ProfileModule,
     QuizAttemptModule,
     PsikologModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
