@@ -3,8 +3,10 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ChatMessage } from './chat-message.model';
 import { User } from './user.model';
 
 @Entity()
@@ -23,4 +25,7 @@ export class ChatRoom {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @OneToMany(() => ChatMessage, (message) => message.room, { cascade: true })
+  messages: ChatMessage[];
 }

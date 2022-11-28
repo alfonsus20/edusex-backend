@@ -48,7 +48,6 @@ export class MaterialService {
         relations: {
           quiz: { questions: { options: true }, attempts: { answers: true } },
         },
-        withDeleted: true,
       });
       await this.materialsRepository.softRemove(material);
       return {

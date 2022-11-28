@@ -35,7 +35,7 @@ export class Material {
   quiz: Quiz;
 
   @DeleteDateColumn()
-  delete_at: Date;
+  deleted_at: Date;
 
   @CreateDateColumn()
   created_at: Date;

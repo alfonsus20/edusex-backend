@@ -13,6 +13,8 @@ import { ProfileModule } from './profile/profile.module';
 import { QuizAttemptModule } from './quiz-attempt/quiz-attempt.module';
 import { PsikologModule } from './psikolog/psikolog.module';
 import { StorageModule } from './storage/storage.module';
+import { PusherService } from './pusher/pusher.service';
+import { PusherModule } from './pusher/pusher.module';
 
 @Module({
   imports: [
@@ -28,8 +30,9 @@ import { StorageModule } from './storage/storage.module';
     QuizAttemptModule,
     PsikologModule,
     StorageModule,
+    PusherModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PusherService],
 })
 export class AppModule {}

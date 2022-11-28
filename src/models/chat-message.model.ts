@@ -22,7 +22,7 @@ export class ChatMessage {
   @ManyToOne(() => User)
   owner: User;
 
-  @ManyToOne(() => ChatRoom)
+  @ManyToOne(() => ChatRoom, (room) => room.messages)
   room: ChatRoom;
 
   @CreateDateColumn()
