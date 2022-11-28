@@ -1,4 +1,9 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { QuizAttempt } from './quiz-attempt.model';
 import { QuizQuestionOption } from './quiz-question-option.model';
 import { QuizQuestion } from './quiz-question.model';
@@ -16,4 +21,7 @@ export class QuizAttemptAnswer {
 
   @ManyToOne(() => QuizQuestionOption)
   option: QuizQuestionOption;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

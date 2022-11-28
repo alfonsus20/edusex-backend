@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -32,6 +33,9 @@ export class QuizAttempt {
     cascade: true,
   })
   answers: QuizAttemptAnswer[];
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @CreateDateColumn()
   created_at: Date;

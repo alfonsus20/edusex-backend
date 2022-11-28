@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Quiz } from './quiz.model';
 import { Topic } from './topic.model';
@@ -32,6 +33,9 @@ export class Material {
 
   @OneToOne(() => Quiz, (quiz) => quiz.material, { cascade: true })
   quiz: Quiz;
+
+  @DeleteDateColumn()
+  delete_at: Date;
 
   @CreateDateColumn()
   created_at: Date;

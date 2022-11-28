@@ -7,6 +7,7 @@ import {
   OneToOne,
   OneToMany,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Material } from './material.model';
 import { QuizAttempt } from './quiz-attempt.model';
@@ -26,6 +27,9 @@ export class Quiz {
   @UpdateDateColumn()
   updated_at: Date;
 
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @OneToOne(() => Material, (material) => material.quiz)
   @JoinColumn()
   material: Material;
@@ -33,6 +37,6 @@ export class Quiz {
   @OneToMany(() => QuizQuestion, (question) => question.quiz, { cascade: true })
   questions: QuizQuestion[];
 
-  @OneToMany(() => QuizAttempt, (attempt) => attempt.quiz)
+  @OneToMany(() => QuizAttempt, (attempt) => attempt.quiz, { cascade: true })
   attempts: QuizAttempt[];
 }

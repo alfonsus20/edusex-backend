@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  Delete,
+} from '@nestjs/common';
 import { JwtGuard, RolesGuard } from '../auth/guard';
 import { UserRole } from '../enum';
 import { CreateMaterialDto } from './dto';
@@ -18,5 +26,11 @@ export class MaterialController {
   @Post('create')
   createMaterial(@Body() dto: CreateMaterialDto) {
     return this.materialService.createMaterial(dto);
+  }
+
+  @UseGuards(new RolesGuard(UserRole.ADMIN))
+  @Delete(':id')
+  async deleteMaterial(@Param('id') materialId: string) {
+    return this.materialService.deleteMaterial(materialId);
   }
 }

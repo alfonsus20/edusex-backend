@@ -40,4 +40,24 @@ export class MaterialService {
       throw error;
     }
   }
+
+  async deleteMaterial(materialId: string) {
+    try {
+      const material = await this.materialsRepository.findOne({
+        where: { id: +materialId },
+        relations: {
+          quiz: { questions: { options: true }, attempts: { answers: true } },
+        },
+        withDeleted: true,
+      });
+      await this.materialsRepository.softRemove(material);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success delete',
+        data: null,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
