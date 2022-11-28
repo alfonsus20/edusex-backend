@@ -1,7 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Topic } from '../models';
+import { QuizAttemptStatus } from '../enum';
+import { Material, Topic } from '../models';
 
 @Injectable()
 export class TopicService {
@@ -36,11 +37,42 @@ export class TopicService {
     }
   }
 
-  async getTopicsWithProgress() {
+  async getTopicsWithProgress(userId: number) {
     try {
-      const topics = await this.topicsRepository.find();
+      const topics = await this.topicsRepository.find({
+        where: {
+          materials: {
+            quiz: {
+              attempts: {
+                user: { id: userId },
+                status: QuizAttemptStatus.SUCCESS,
+              },
+            },
+          },
+        },
+        relations: { materials: true },
+      });
 
-      return { statusCode: HttpStatus.OK, message: 'success', data: topics };
+      const temp = topics.reduce(
+        (prev, topic) => ({ ...prev, [topic.id]: topic.materials.length }),
+        {},
+      );
+
+      const allTopics = await this.topicsRepository
+        .createQueryBuilder('topic')
+        .loadRelationCountAndMap(
+          'topic.total_material',
+          'topic.materials',
+          'material',
+        )
+        .getMany();
+
+      const modified = allTopics.map((topic) => ({
+        ...topic,
+        finished_material: temp[topic.id] || 0,
+      }));
+
+      return { statusCode: HttpStatus.OK, message: 'success', data: modified };
     } catch (error) {
       throw error;
     }
