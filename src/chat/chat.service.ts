@@ -24,7 +24,7 @@ export class ChatService {
         relations: { user: true, psikolog: true },
       });
 
-      if (room.user.id === +senderId || room.psikolog.id === +senderId) {
+      if (room.user.id !== +senderId && room.psikolog.id !== +senderId) {
         throw new ForbiddenException('forbidden');
       }
 
@@ -89,6 +89,44 @@ export class ChatService {
       return {
         statusCode: HttpStatus.OK,
         message: 'success create room',
+        data: room,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getChatRooms(userId: number) {
+    try {
+      const rooms = await this.chatRoomRepository.find({
+        where: [{ user: { id: userId } }, { psikolog: { id: userId } }],
+        relations: { user: true, psikolog: true },
+        order: { updated_at: 'DESC' },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success get chat rooms',
+        data: rooms,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getChatDetail(userId: number, roomId: string) {
+    try {
+      const room = await this.chatRoomRepository.findOne({
+        where: [
+          { user: { id: userId }, id: +roomId },
+          { psikolog: { id: userId }, id: +roomId },
+        ],
+        relations: { messages: { owner: true }, user: true, psikolog: true },
+      });
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success get chat detail',
         data: room,
       };
     } catch (error) {

@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Get, Param } from '@nestjs/common';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { JwtGuard } from '../auth/guard';
 import { ChatService } from './chat.service';
@@ -8,6 +8,16 @@ import { CreateChatRoomDto, SendChatDto } from './dto';
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
+
+  @Get('rooms')
+  getChatRooms(@GetUser('id') userId: number) {
+    return this.chatService.getChatRooms(userId);
+  }
+
+  @Get('rooms/:id')
+  getChatDetail(@GetUser('id') userId: number, @Param('id') roomId: string) {
+    return this.chatService.getChatDetail(userId, roomId);
+  }
 
   @Post()
   sendChat(@GetUser('id') userId: number, @Body() dto: SendChatDto) {

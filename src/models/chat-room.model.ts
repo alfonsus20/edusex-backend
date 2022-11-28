@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ChatMessage } from './chat-message.model';
 import { User } from './user.model';
@@ -25,6 +26,9 @@ export class ChatRoom {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
   @OneToMany(() => ChatMessage, (message) => message.room, { cascade: true })
   messages: ChatMessage[];
