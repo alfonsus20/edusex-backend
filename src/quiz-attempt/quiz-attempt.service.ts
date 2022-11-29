@@ -17,6 +17,7 @@ export class QuizAttemptService {
         where: { id: +attemptId, user: { id: userId } },
         relations: {
           answers: { question: { options: true }, option: true },
+          quiz: true,
         },
       });
 

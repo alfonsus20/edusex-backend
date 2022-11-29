@@ -17,12 +17,14 @@ export class QuizService {
 
   async getQuizById(userId: number, quizId: string) {
     try {
-      const quiz = await this.quizRepository.findOne({
-        where: { id: +quizId },
-      });
+      const quiz = await this.quizRepository
+        .createQueryBuilder('quiz')
+        .loadRelationCountAndMap('quiz.questions', 'quiz.questions')
+        .where('quiz.id = :quizId', { quizId: +quizId })
+        .getOne();
 
       const quizAttempts = await this.quizAttemptRepository.find({
-        where: { user: { id: userId } },
+        where: { user: { id: userId }, quiz: { id: +quizId } },
       });
 
       return {
@@ -37,7 +39,7 @@ export class QuizService {
 
   async getQuizQuestions(quizId: string) {
     try {
-      const quiz = await this.quizRepository.find({
+      const quiz = await this.quizRepository.findOne({
         where: { id: +quizId },
         relations: { questions: { options: true } },
       });
