@@ -16,7 +16,6 @@ export class PsikologService {
     try {
       const psikologList = await this.userRepository.find({
         where: { role: UserRole.PSIKOLOG },
-        select: { id: true, name: true, avatar_url: true, role: true },
       });
 
       return {

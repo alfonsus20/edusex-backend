@@ -32,7 +32,7 @@ export class DiscussionController {
   }
 
   @Get('my-questions')
-  getUserQuestions(userId: number) {
+  getUserQuestions(@GetUser('id') userId: number) {
     return this.discussionService.getUserQuestions(userId);
   }
 

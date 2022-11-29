@@ -48,13 +48,8 @@ export class DiscussionService {
   async getAllQuestions() {
     try {
       const questions = await this.discussionQuestionRepository.find({
-        relations: { replies: { user: true } },
-        select: {
-          replies: {
-            reply: true,
-            user: { id: true, name: true, role: true, avatar_url: true },
-          },
-        },
+        relations: { replies: { user: true }, user: true, topic: true },
+        order: { created_at: 'DESC' },
       });
 
       return { statusCode: HttpStatus.OK, message: 'success', data: questions };
@@ -66,14 +61,8 @@ export class DiscussionService {
   async getQuestionById(questionId: string) {
     try {
       const question = await this.discussionQuestionRepository.findOne({
-        relations: { replies: { user: true } },
+        relations: { replies: { user: true }, user: true },
         where: { id: +questionId },
-        select: {
-          replies: {
-            reply: true,
-            user: { id: true, name: true, role: true, avatar_url: true },
-          },
-        },
       });
 
       return { statusCode: HttpStatus.OK, message: 'success', data: question };
@@ -86,13 +75,8 @@ export class DiscussionService {
     try {
       const question = await this.discussionQuestionRepository.find({
         where: { user: { id: userId } },
-        relations: { replies: { user: true } },
-        select: {
-          replies: {
-            reply: true,
-            user: { id: true, name: true, role: true, avatar_url: true },
-          },
-        },
+        relations: { replies: { user: true }, user: true },
+        order: { created_at: 'DESC' },
       });
 
       return { statusCode: HttpStatus.OK, message: 'success', data: question };

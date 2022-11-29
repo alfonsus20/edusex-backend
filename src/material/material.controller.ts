@@ -17,6 +17,12 @@ import { MaterialService } from './material.service';
 export class MaterialController {
   constructor(private readonly materialService: MaterialService) {}
 
+  @UseGuards(new RolesGuard(UserRole.ADMIN))
+  @Get()
+  getAllMaterials() {
+    return this.materialService.getAllMaterials();
+  }
+
   @Get(':id')
   getMaterialById(@Param('id') materialId: string) {
     return this.materialService.getMaterialById(materialId);

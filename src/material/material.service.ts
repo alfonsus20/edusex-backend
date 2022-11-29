@@ -27,6 +27,23 @@ export class MaterialService {
     }
   }
 
+  async getAllMaterials() {
+    try {
+      const materials = await this.materialsRepository.find({
+        relations: {
+          topic: true,
+        },
+      });
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success get all materials',
+        data: materials,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createMaterial(dto: CreateMaterialDto) {
     try {
       const material = await this.materialsRepository.save({

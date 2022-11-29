@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { DiscussionQuestionReply } from './discussion-question-reply.model';
 import { Topic } from './topic.model';
