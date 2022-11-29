@@ -51,7 +51,7 @@ export class QuizService {
     }
   }
 
-  async submitQuizQuestions(
+  async submitQuizAnswers(
     userId: number,
     quizId: string,
     answers: SubmitQuizDto,
@@ -85,7 +85,7 @@ export class QuizService {
         quiz.questions.length;
 
       const status =
-        totalScore > quiz.min_score
+        totalScore >= quiz.min_score
           ? QuizAttemptStatus.SUCCESS
           : QuizAttemptStatus.FAILED;
 

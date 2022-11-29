@@ -21,11 +21,11 @@ export class QuizController {
   }
 
   @Post(':id/answer')
-  submitQuizQuestions(
+  submitQuizAnswers(
     @Param('id') quizId: string,
     @Body() answers: SubmitQuizDto,
     @GetUser('id') userId: number,
   ) {
-    return this.quizService.submitQuizQuestions(userId, quizId, answers);
+    return this.quizService.submitQuizAnswers(userId, quizId, answers);
   }
 }
