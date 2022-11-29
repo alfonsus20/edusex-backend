@@ -21,6 +21,7 @@ export class QuizService {
         .createQueryBuilder('quiz')
         .loadRelationCountAndMap('quiz.questions', 'quiz.questions')
         .where('quiz.id = :quizId', { quizId: +quizId })
+        .leftJoinAndSelect('quiz.material', 'material')
         .getOne();
 
       const quizAttempts = await this.quizAttemptRepository.find({
