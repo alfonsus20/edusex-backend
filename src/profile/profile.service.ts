@@ -1,5 +1,6 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { isURL } from 'class-validator';
 import { Repository } from 'typeorm';
 import { QuizAttemptStatus, UserRole } from '../enum';
 import { Quiz, QuizAttempt, User } from '../models';
@@ -37,7 +38,7 @@ export class ProfileService {
           passedQuiz.map((quiz) => quiz.id),
         );
 
-        const [totalQuiz] = await this.quizRepository.findAndCount();
+        const [, totalQuiz] = await this.quizRepository.findAndCount();
 
         returnedData = {
           ...returnedData,
@@ -57,6 +58,14 @@ export class ProfileService {
 
   async editProfile(userId: number, dto: EditProfileDto) {
     try {
+      if (
+        dto.avatar_url !== undefined &&
+        dto.avatar_url !== '' &&
+        !isURL(dto.avatar_url)
+      ) {
+        throw new BadRequestException('avatar_url must be a url');
+      }
+
       const updateInfo = await this.userRepository.update({ id: userId }, dto);
 
       return {

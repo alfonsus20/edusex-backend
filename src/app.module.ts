@@ -15,6 +15,7 @@ import { PsikologModule } from './psikolog/psikolog.module';
 import { StorageModule } from './storage/storage.module';
 import { PusherService } from './pusher/pusher.service';
 import { PusherModule } from './pusher/pusher.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PusherModule } from './pusher/pusher.module';
     PsikologModule,
     StorageModule,
     PusherModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PusherService],

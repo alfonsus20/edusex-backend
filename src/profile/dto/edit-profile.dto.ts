@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class EditProfileDto {
   @IsOptional()
@@ -6,6 +6,6 @@ export class EditProfileDto {
   name?: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   avatar_url?: string;
 }

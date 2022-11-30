@@ -8,3 +8,4 @@ export * from './quiz-attempt.model';
 export * from './discussion-question.model';
 export * from './discussion-question-reply.model';
 export * from './quiz-attempt-answer.model';
+export * from './notification.model';
