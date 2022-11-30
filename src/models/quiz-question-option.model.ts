@@ -4,11 +4,9 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuizAttemptAnswer } from './quiz-attempt-answer.model';
 import { QuizQuestion } from './quiz-question.model';
 
 @Entity()
@@ -22,13 +20,13 @@ export class QuizQuestionOption {
   @Column('text')
   option: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ type: 'timestamptz' })
   deleted_at: Date;
 
   @ManyToOne(() => QuizQuestion, (question) => question.options)

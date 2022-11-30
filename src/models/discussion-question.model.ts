@@ -5,7 +5,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { DiscussionQuestionReply } from './discussion-question-reply.model';
 import { Topic } from './topic.model';
@@ -28,6 +27,6 @@ export class DiscussionQuestion {
   @OneToMany(() => DiscussionQuestionReply, (reply) => reply.question)
   replies: DiscussionQuestionReply[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 }

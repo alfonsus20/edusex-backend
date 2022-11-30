@@ -1,4 +1,5 @@
 import {
+  CreateDateColumn,
   DeleteDateColumn,
   Entity,
   ManyToOne,
@@ -22,6 +23,9 @@ export class QuizAttemptAnswer {
   @ManyToOne(() => QuizQuestionOption)
   option: QuizQuestionOption;
 
-  @DeleteDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
+  created_at: Date;
+
+  @DeleteDateColumn({ type: 'timestamptz' })
   deleted_at: Date;
 }

@@ -34,9 +34,9 @@ export class QuizAttempt {
   })
   answers: QuizAttemptAnswer[];
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ type: 'timestamptz' })
   deleted_at: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 }

@@ -25,6 +25,6 @@ export class ChatMessage {
   @ManyToOne(() => ChatRoom, (room) => room.messages)
   room: ChatRoom;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 }

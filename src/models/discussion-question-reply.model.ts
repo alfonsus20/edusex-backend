@@ -22,6 +22,6 @@ export class DiscussionQuestionReply {
   @ManyToOne(() => DiscussionQuestion, (question) => question.replies)
   question: DiscussionQuestion;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 }

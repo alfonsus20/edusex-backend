@@ -24,10 +24,10 @@ export class ChatRoom {
   @Column('text', { nullable: true })
   last_message: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;
 
   @OneToMany(() => ChatMessage, (message) => message.room, { cascade: true })
