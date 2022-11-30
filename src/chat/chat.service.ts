@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { ChatMessage } from '../models/chat-message.model';
 import { ChatRoom } from '../models/chat-room.model';
 import { PusherService } from '../pusher/pusher.service';
@@ -58,9 +58,9 @@ export class ChatService {
       );
 
       await Promise.all([
+        triggerFetchDetailChat,
         triggerFetchChatListPsikolog,
         triggerFetchChatListUser,
-        triggerFetchDetailChat,
       ]);
 
       return {
@@ -98,11 +98,23 @@ export class ChatService {
 
   async getChatRooms(userId: number) {
     try {
-      const rooms = await this.chatRoomRepository.find({
-        where: [{ user: { id: userId } }, { psikolog: { id: userId } }],
-        relations: { user: true, psikolog: true },
-        order: { updated_at: 'DESC' },
-      });
+      const rooms = await this.chatRoomRepository
+        .createQueryBuilder('room')
+        .leftJoinAndSelect('room.user', 'user')
+        .leftJoinAndSelect('room.psikolog', 'psikolog')
+        .loadRelationCountAndMap(
+          'room.unread_chats',
+          'room.messages',
+          'message',
+          (qb) =>
+            qb
+              .where('message.is_read IS FALSE')
+              .andWhere('message.owner.id != :userId', { userId }),
+        )
+        .where('psikolog.id = :userId', { userId })
+        .orWhere('user.id = :userId', { userId })
+        .orderBy('room.updated_at', 'DESC')
+        .getMany();
 
       return {
         statusCode: HttpStatus.OK,
@@ -116,13 +128,25 @@ export class ChatService {
 
   async getChatDetail(userId: number, roomId: string) {
     try {
-      const room = await this.chatRoomRepository.findOne({
+      const room = await this.chatRoomRepository.findOneOrFail({
         where: [
           { user: { id: userId }, id: +roomId },
           { psikolog: { id: userId }, id: +roomId },
         ],
         relations: { messages: { owner: true }, user: true, psikolog: true },
+        order: { messages: { created_at: 'ASC' } },
       });
+
+      await this.chatMessageRepository.update(
+        { owner: { id: Not(userId) }, room: { id: +roomId } },
+        { is_read: true },
+      );
+
+      await this.pusherService.trigger(
+        `user-${room.user.id}`,
+        'fetch-chat-rooms',
+        null,
+      );
 
       return {
         statusCode: HttpStatus.OK,
