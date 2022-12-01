@@ -1,7 +1,14 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DiscussionQuestion, DiscussionQuestionReply } from '../models';
+import { NotificationType, UserRole } from '../enum';
+import {
+  DiscussionQuestion,
+  DiscussionQuestionReply,
+  Notification,
+  User,
+} from '../models';
+import { PusherService } from '../pusher/pusher.service';
 import { CreateDiscussionQuestionDto, ReplyDiscussionQuestionDto } from './dto';
 
 @Injectable()
@@ -11,6 +18,9 @@ export class DiscussionService {
     private discussionQuestionRepository: Repository<DiscussionQuestion>,
     @InjectRepository(DiscussionQuestionReply)
     private discussionQuestionReplyRepository: Repository<DiscussionQuestionReply>,
+    @InjectRepository(Notification)
+    private notificationRepository: Repository<Notification>,
+    private pusherService: PusherService,
   ) {}
 
   async createQuestion(userId: number, dto: CreateDiscussionQuestionDto) {
@@ -28,16 +38,36 @@ export class DiscussionService {
   }
 
   async replyQuestion(
-    userId: number,
+    user: User,
     questionId: string,
     dto: ReplyDiscussionQuestionDto,
   ) {
     try {
+      const question = await this.discussionQuestionRepository.findOne({
+        where: { id: +questionId },
+        relations: { user: true },
+      });
+
       const reply = await this.discussionQuestionReplyRepository.save({
-        user: { id: userId },
+        user: { id: user.id },
         question: { id: +questionId },
         reply: dto.reply,
       });
+
+      if (user.id !== question.user.id) {
+        await this.notificationRepository.save({
+          content: `Pertanyaan kamu "${question.question}" telah dijawab oleh ${
+            user.role === UserRole.PSIKOLOG ? 'Psikolog' : ''
+          } ${user.name}.`,
+          user: { id: question.user.id },
+          type: NotificationType.DISCUSSION_FORUM,
+        });
+        await this.pusherService.trigger(
+          `user-${question.user.id}`,
+          'notification-received',
+          null,
+        );
+      }
 
       return { statusCode: HttpStatus.OK, message: 'success', data: reply };
     } catch (error) {

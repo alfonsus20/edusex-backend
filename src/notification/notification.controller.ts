@@ -13,7 +13,7 @@ export class NotificationController {
     return this.notificationService.getAllNotifications(userId);
   }
 
-  @Get('/all/read')
+  @Get('/read-all')
   markAllNotificationAsRead(@GetUser('id') userId: number) {
     return this.notificationService.markAllNotificationAsRead(userId);
   }

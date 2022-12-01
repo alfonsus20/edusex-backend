@@ -2,6 +2,8 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not } from 'typeorm';
+import { NotificationType } from '../enum';
+import { Notification, User } from '../models';
 import { ChatMessage } from '../models/chat-message.model';
 import { ChatRoom } from '../models/chat-room.model';
 import { PusherService } from '../pusher/pusher.service';
@@ -14,24 +16,28 @@ export class ChatService {
     private chatRoomRepository: Repository<ChatRoom>,
     @InjectRepository(ChatMessage)
     private chatMessageRepository: Repository<ChatMessage>,
+    @InjectRepository(Notification)
+    private notificationRepository: Repository<Notification>,
     private pusherService: PusherService,
   ) {}
 
-  async sendChat(senderId: number, dto: SendChatDto) {
+  async sendChat(sender: User, dto: SendChatDto) {
     try {
       const room = await this.chatRoomRepository.findOne({
         where: { id: dto.room_id },
         relations: { user: true, psikolog: true },
       });
 
-      if (room.user.id !== +senderId && room.psikolog.id !== +senderId) {
+      if (room.user.id !== +sender.id && room.psikolog.id !== +sender.id) {
         throw new ForbiddenException('forbidden');
       }
+
+      const receiver = sender.id === room.user.id ? room.psikolog : room.user;
 
       const message = await this.chatMessageRepository.save({
         room: { id: dto.room_id },
         message: dto.message,
-        owner: { id: senderId },
+        owner: { id: sender.id },
       });
 
       await this.chatRoomRepository.update(
@@ -39,28 +45,34 @@ export class ChatService {
         { last_message: dto.message },
       );
 
+      await this.notificationRepository.save({
+        content: `Pesan personal baru dari ${sender.name}`,
+        user: { id: receiver.id },
+        type: NotificationType.PERSONAL_CHAT,
+      });
+
       const triggerFetchDetailChat = this.pusherService.trigger(
         `room-${room.id}`,
         'personal-chat',
         message,
       );
 
-      const triggerFetchChatListUser = this.pusherService.trigger(
-        `user-${room.user.id}`,
+      const triggerFetchChatList = this.pusherService.trigger(
+        [`user-${room.user.id}`, `user-${room.psikolog.id}`],
         'fetch-chat-rooms',
         null,
       );
 
-      const triggerFetchChatListPsikolog = this.pusherService.trigger(
-        `user-${room.psikolog.id}`,
-        'fetch-chat-rooms',
+      const triggerFetchNotification = this.pusherService.trigger(
+        `user-${receiver.id}`,
+        'notification-received',
         null,
       );
 
       await Promise.all([
         triggerFetchDetailChat,
-        triggerFetchChatListPsikolog,
-        triggerFetchChatListUser,
+        triggerFetchChatList,
+        triggerFetchNotification,
       ]);
 
       return {

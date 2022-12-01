@@ -5,9 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatRoom } from '../models/chat-room.model';
 import { ChatMessage } from '../models/chat-message.model';
 import { PusherModule } from '../pusher/pusher.module';
+import { Notification } from '../models';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ChatRoom, ChatMessage]), PusherModule],
+  imports: [
+    TypeOrmModule.forFeature([ChatRoom, ChatMessage, Notification]),
+    PusherModule,
+  ],
   controllers: [ChatController],
   providers: [ChatService],
 })
