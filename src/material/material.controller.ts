@@ -6,10 +6,11 @@ import {
   Post,
   UseGuards,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { JwtGuard, RolesGuard } from '../auth/guard';
 import { UserRole } from '../enum';
-import { CreateMaterialDto } from './dto';
+import { CreateMaterialDto, EditMaterialDto } from './dto';
 import { MaterialService } from './material.service';
 
 @UseGuards(JwtGuard)
@@ -26,6 +27,16 @@ export class MaterialController {
   @Get(':id')
   getMaterialById(@Param('id') materialId: string) {
     return this.materialService.getMaterialById(materialId);
+  }
+
+  @Get(':id/with-quiz')
+  getMaterialByIdWithQuiz(@Param('id') materialId: string) {
+    return this.materialService.getMaterialByIdWithQuiz(materialId);
+  }
+
+  @Put(':id')
+  editMaterial(@Param('id') materialId: string, @Body() dto: EditMaterialDto) {
+    return this.materialService.editMaterial(materialId, dto);
   }
 
   @UseGuards(new RolesGuard(UserRole.ADMIN))

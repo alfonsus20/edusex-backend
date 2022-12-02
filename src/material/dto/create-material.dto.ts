@@ -6,12 +6,17 @@ import {
   IsBoolean,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
   ValidateNested,
 } from 'class-validator';
 
 class QuizOptionDto {
+  @IsInt()
+  @IsOptional()
+  id: number;
+
   @IsString()
   @IsNotEmpty()
   option: string;
@@ -22,6 +27,10 @@ class QuizOptionDto {
 }
 
 class QuizQuestionDto {
+  @IsInt()
+  @IsOptional()
+  id: number;
+
   @IsString()
   @IsNotEmpty()
   question: string;
@@ -44,7 +53,7 @@ export class CreateMaterialDto {
   title: string;
 
   @IsInt()
-  topicId: number;
+  topic_id: number;
 
   @IsUrl()
   @IsNotEmpty()

@@ -43,6 +43,9 @@ export class QuizService {
       const quiz = await this.quizRepository.findOne({
         where: { id: +quizId },
         relations: { questions: { options: true } },
+        order: {
+          questions: { created_at: 'ASC', options: { created_at: 'ASC' } },
+        },
       });
 
       return { statusCode: HttpStatus.OK, message: 'success', data: quiz };
