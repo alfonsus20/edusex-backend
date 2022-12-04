@@ -53,6 +53,7 @@ export class MaterialService {
         relations: {
           topic: true,
         },
+        order: { updated_at: 'DESC' },
       });
       return {
         statusCode: HttpStatus.OK,

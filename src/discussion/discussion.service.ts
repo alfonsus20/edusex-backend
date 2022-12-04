@@ -55,7 +55,7 @@ export class DiscussionService {
       });
 
       if (user.id !== question.user.id) {
-        await this.notificationRepository.save({
+        const notification = await this.notificationRepository.save({
           content: `Pertanyaan kamu "${question.question}" telah dijawab oleh ${
             user.role === UserRole.PSIKOLOG ? 'Psikolog' : ''
           } ${user.name}.`,
@@ -65,7 +65,7 @@ export class DiscussionService {
         await this.pusherService.trigger(
           `user-${question.user.id}`,
           'notification-received',
-          null,
+          notification,
         );
       }
 

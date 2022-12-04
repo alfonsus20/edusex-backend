@@ -45,7 +45,7 @@ export class ChatService {
         { last_message: dto.message },
       );
 
-      await this.notificationRepository.save({
+      const notification = await this.notificationRepository.save({
         content: `Pesan personal baru dari ${sender.name}`,
         user: { id: receiver.id },
         type: NotificationType.PERSONAL_CHAT,
@@ -66,7 +66,7 @@ export class ChatService {
       const triggerFetchNotification = this.pusherService.trigger(
         `user-${receiver.id}`,
         'notification-received',
-        null,
+        notification,
       );
 
       await Promise.all([
