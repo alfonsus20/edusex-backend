@@ -103,13 +103,13 @@ export class DiscussionService {
 
   async getUserQuestions(userId: number) {
     try {
-      const question = await this.discussionQuestionRepository.find({
+      const questions = await this.discussionQuestionRepository.find({
         where: { user: { id: userId } },
         relations: { replies: { user: true }, user: true },
         order: { created_at: 'DESC' },
       });
 
-      return { statusCode: HttpStatus.OK, message: 'success', data: question };
+      return { statusCode: HttpStatus.OK, message: 'success', data: questions };
     } catch (error) {
       throw error;
     }

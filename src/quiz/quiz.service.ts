@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuizAttemptStatus } from '../enum';
-import { Quiz, QuizAttempt, QuizAttemptAnswer } from '../models';
+import { Quiz, QuizAttempt } from '../models';
 import { SubmitQuizDto } from './dto';
 
 @Injectable()
@@ -11,8 +11,6 @@ export class QuizService {
     @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
     @InjectRepository(QuizAttempt)
     private quizAttemptRepository: Repository<QuizAttempt>,
-    @InjectRepository(QuizAttemptAnswer)
-    private quizAttemptAnswerRepository: Repository<QuizAttemptAnswer>,
   ) {}
 
   async getQuizById(userId: number, quizId: string) {

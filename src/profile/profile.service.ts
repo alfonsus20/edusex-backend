@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { isURL } from 'class-validator';
 import { Repository } from 'typeorm';
 import { QuizAttemptStatus, UserRole } from '../enum';
-import { Quiz, QuizAttempt, User } from '../models';
+import { Quiz, User } from '../models';
 import { EditProfileDto } from './dto';
 
 @Injectable()
@@ -11,8 +11,6 @@ export class ProfileService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
-    @InjectRepository(QuizAttempt)
-    private quizAttemptRepository: Repository<QuizAttempt>,
   ) {}
 
   async getUserProfile(userId: number) {

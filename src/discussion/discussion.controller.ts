@@ -1,7 +1,6 @@
 import { Controller, Post, Get, UseGuards, Param, Body } from '@nestjs/common';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { JwtGuard } from '../auth/guard';
-import { UserRole } from '../enum';
 import { User } from '../models';
 import { DiscussionService } from './discussion.service';
 import { CreateDiscussionQuestionDto, ReplyDiscussionQuestionDto } from './dto';

@@ -2,7 +2,7 @@ import { Injectable, HttpStatus, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtGuard } from '../auth/guard';
-import { Material, Quiz } from '../models';
+import { Material } from '../models';
 import { CreateMaterialDto, EditMaterialDto } from './dto';
 
 @UseGuards(JwtGuard)
@@ -100,7 +100,7 @@ export class MaterialService {
 
   async editMaterial(materialId: string, dto: EditMaterialDto) {
     try {
-      await this.materialsRepository.save({
+      const material = await this.materialsRepository.save({
         id: +materialId,
         ...dto,
       });
@@ -108,7 +108,7 @@ export class MaterialService {
       return {
         statusCode: HttpStatus.OK,
         message: 'success edit',
-        data: null,
+        data: material,
       };
     } catch (error) {
       throw error;
