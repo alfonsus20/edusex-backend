@@ -58,7 +58,7 @@ export class ChatService {
       );
 
       const triggerFetchChatList = this.pusherService.trigger(
-        [`user-${room.user.id}`, `user-${room.psikolog.id}`],
+        [`user-${room.user.id}-room`, `user-${room.psikolog.id}-room`],
         'fetch-chat-rooms',
         null,
       );
