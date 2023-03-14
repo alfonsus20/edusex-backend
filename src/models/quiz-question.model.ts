@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { QuizAttemptAnswer } from './quiz-attempt-answer.model';
 import { QuizQuestionOption } from './quiz-question-option.model';
 import { Quiz } from './quiz.model';
 
@@ -39,7 +38,4 @@ export class QuizQuestion {
     cascade: true,
   })
   options: QuizQuestionOption[];
-
-  // @OneToMany(() => QuizAttemptAnswer, (answer) => answer.attempt)
-  // attempt: QuizAttemptAnswer[];
 }

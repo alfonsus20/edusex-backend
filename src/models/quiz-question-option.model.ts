@@ -31,7 +31,4 @@ export class QuizQuestionOption {
 
   @ManyToOne(() => QuizQuestion, (question) => question.options)
   question: QuizQuestion;
-
-  // @OneToMany(() => QuizAttemptAnswer, (answer) => answer.attempt)
-  // attempt: QuizAttemptAnswer[];
 }
