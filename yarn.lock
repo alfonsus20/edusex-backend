@@ -1070,6 +1070,14 @@
   dependencies:
     "@types/express" "*"
 
+"@types/node-fetch@^2.5.7":
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.9.tgz#15f529d247f1ede1824f7e7acdaa192d5f28071e"
+  integrity sha512-bQVlnMLFJ2d35DkPNjEPmd9ueO/rh5EiaZt2bhqiSarPjZIuIV6bPQVqcrEyvNo+AfTrRGVazle1tl597w3gfA==
+  dependencies:
+    "@types/node" "*"
+    form-data "^4.0.0"
+
 "@types/node@*":
   version "18.11.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
@@ -4437,11 +4445,12 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pusher@^5.1.1-beta:
-  version "5.1.1-beta"
-  resolved "https://registry.yarnpkg.com/pusher/-/pusher-5.1.1-beta.tgz#ca673a4c2cb0deccae20fc77946ee3298c549851"
-  integrity sha512-kGzseVc0MM5kJ6d5TFbtZXeBqDI1enkDq5QjfviEly9/57RSCiY/965ve6IJ5NbMp7T8ZPCqg82FIAkJ+zFxNg==
+pusher@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/pusher/-/pusher-5.2.0.tgz#cc208d15000f8d4d8b485acb844d7557adb2cf20"
+  integrity sha512-F6LNiZyJsIkoHLz+YurjKZ1HH8V1/cMggn4k97kihjP3uTvm0P4mZzSFeHOWIy+PlJ2VInJBhUFJBYLsFR5cjg==
   dependencies:
+    "@types/node-fetch" "^2.5.7"
     abort-controller "^3.0.0"
     is-base64 "^1.1.0"
     node-fetch "^2.6.1"
