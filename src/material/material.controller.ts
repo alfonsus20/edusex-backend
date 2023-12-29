@@ -13,7 +13,6 @@ import { UserRole } from '../enum';
 import { CreateMaterialDto, EditMaterialDto } from './dto';
 import { MaterialService } from './material.service';
 
-@UseGuards(JwtGuard)
 @Controller('material')
 export class MaterialController {
   constructor(private readonly materialService: MaterialService) {}
@@ -34,17 +33,20 @@ export class MaterialController {
     return this.materialService.getMaterialByIdWithQuiz(materialId);
   }
 
+  @UseGuards(JwtGuard)
   @Put(':id')
   editMaterial(@Param('id') materialId: string, @Body() dto: EditMaterialDto) {
     return this.materialService.editMaterial(materialId, dto);
   }
 
+  @UseGuards(JwtGuard)
   @UseGuards(new RolesGuard(UserRole.ADMIN))
   @Post('create')
   createMaterial(@Body() dto: CreateMaterialDto) {
     return this.materialService.createMaterial(dto);
   }
 
+  @UseGuards(JwtGuard)
   @UseGuards(new RolesGuard(UserRole.ADMIN))
   @Delete(':id')
   async deleteMaterial(@Param('id') materialId: string) {

@@ -5,11 +5,11 @@ import { User } from '../models';
 import { DiscussionService } from './discussion.service';
 import { CreateDiscussionQuestionDto, ReplyDiscussionQuestionDto } from './dto';
 
-@UseGuards(JwtGuard)
 @Controller('discussion')
 export class DiscussionController {
   constructor(private readonly discussionService: DiscussionService) {}
 
+  @UseGuards(JwtGuard)
   @Post(':id/reply')
   replyQuestion(
     @GetUser() user: User,
@@ -19,6 +19,7 @@ export class DiscussionController {
     return this.discussionService.replyQuestion(user, questionId, dto);
   }
 
+  @UseGuards(JwtGuard)
   @Post('create-question')
   createQuestion(
     @GetUser('id') userId: number,
@@ -32,6 +33,7 @@ export class DiscussionController {
     return this.discussionService.getAllQuestions();
   }
 
+  @UseGuards(JwtGuard)
   @Get('my-questions')
   getUserQuestions(@GetUser('id') userId: number) {
     return this.discussionService.getUserQuestions(userId);
