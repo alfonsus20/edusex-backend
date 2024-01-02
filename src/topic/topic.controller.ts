@@ -17,9 +17,9 @@ export class TopicController {
   constructor(private readonly topicService: TopicService) {}
 
   @Get()
-  // Cache for 1 day
+  // Cache for 2 days
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(24 * 60 * 60 * 1000)
+  @CacheTTL(2 * 24 * 60 * 60 * 1000)
   @ApiOperation({ summary: 'All Topics' })
   async getTopics() {
     return this.topicService.getTopics();

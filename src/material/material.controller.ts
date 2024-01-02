@@ -7,12 +7,14 @@ import {
   UseGuards,
   Delete,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtGuard, RolesGuard } from '../auth/guard';
 import { UserRole } from '../enum';
 import { CreateMaterialDto, EditMaterialDto } from './dto';
 import { MaterialService } from './material.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('material')
 @ApiTags('Educational Material')
@@ -27,6 +29,9 @@ export class MaterialController {
   }
 
   @Get(':id')
+  // Cache for 1 day
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(1 * 24 * 60 * 60 * 1000)
   @ApiOperation({ summary: 'Material Detail' })
   getMaterialById(@Param('id') materialId: string) {
     return this.materialService.getMaterialById(materialId);

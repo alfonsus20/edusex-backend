@@ -2,6 +2,10 @@
 
 Backend repository for edusex website
 
+## API Documentation
+
+[https://edusex-backend.adaptable.app/docs](https://edusex-backend.adaptable.app/docs)
+
 ## Run Locally
 
 Clone the project
@@ -34,8 +38,8 @@ Start the server
   yarn start
 ```
 
-
 ## Entity Relationship Diagram
+
 <div align="center">
   <img src="https://user-images.githubusercontent.com/58034788/225007407-68ead549-a32c-4aaa-b007-c1b6dcdab55d.png">
 </div>
